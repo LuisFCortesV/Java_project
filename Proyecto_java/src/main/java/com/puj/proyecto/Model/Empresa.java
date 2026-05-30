@@ -2,7 +2,7 @@ package com.puj.proyecto.Model;
 
 import java.util.ArrayList;
 
-public class Empresa {
+public class Empresa implements IEmpresa{
     private String nombre;
     ArrayList<Cliente> clientes;
     ArrayList<Cuenta> cuentas;
@@ -18,6 +18,7 @@ public class Empresa {
     }
 
     //Getter - Setter
+
     public String getNombre() {
         return nombre;
     }
@@ -32,5 +33,13 @@ public class Empresa {
 
     public void setClientes(ArrayList<Cliente> clientes) {
         this.clientes = clientes;
+    }
+
+    public ArrayList<Cuenta> getCuentas() {
+        return cuentas;
+    }
+
+    public void setCuentas(ArrayList<Cuenta> cuentas) {
+        this.cuentas = cuentas;
     }
 }
