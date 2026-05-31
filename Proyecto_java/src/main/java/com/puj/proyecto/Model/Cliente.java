@@ -16,6 +16,8 @@ public class Cliente {
     }
 
     // Getter - Setter
+
+
     public String getDireccion() {
         return direccion;
     }
@@ -46,5 +48,13 @@ public class Cliente {
 
     public void setTipo_id(String tipo_id) {
         this.tipo_id = tipo_id;
+    }
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
     }
 }
