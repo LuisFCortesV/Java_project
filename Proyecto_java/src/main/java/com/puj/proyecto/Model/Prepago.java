@@ -19,11 +19,20 @@ public class Prepago extends Cuenta{
     }
 
     //Getter - Setter
+
     public long getNumero_minutos() {
         return numero_minutos;
     }
 
     public void setNumero_minutos(long numero_minutos) {
         this.numero_minutos = numero_minutos;
+    }
+
+    public ArrayList<Recarga> getRecargas() {
+        return recargas;
+    }
+
+    public void setRecargas(ArrayList<Recarga> recargas) {
+        this.recargas = recargas;
     }
 }

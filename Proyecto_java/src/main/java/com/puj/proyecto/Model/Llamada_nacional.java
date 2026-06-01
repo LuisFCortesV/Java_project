@@ -6,7 +6,7 @@ public class Llamada_nacional extends Llamada {
 
     //Metodos
     public long calcular_valor(){
-        return 0;
+        return getDuracion() * IEmpresa.precio_minuto;
     }
 
     // Constructor
