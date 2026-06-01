@@ -159,7 +159,7 @@ public class Empresa implements IEmpresa{
         }
 
     //Constructor
-    public Empresa(String nombre, ArrayList<Cliente> clientes) {
+    public Empresa(String nombre) {
         this.nombre = nombre;
         this.clientes = new ArrayList<>();
         this.cuentas = new ArrayList<>();
