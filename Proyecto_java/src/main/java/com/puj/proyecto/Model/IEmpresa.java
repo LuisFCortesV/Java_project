@@ -22,6 +22,10 @@ public interface IEmpresa {
 
     void registrar_llamada(int id, String tipo_llamada, String pais, LocalDate fecha, int telefono_destinatario, int duracion_llamada);
 
+    String reporteFacturacionPostpago(String identificacion, int anio, int mes);
+
+    String reporteRecargas(int anio, int mes);
+
     public static LocalDate convertirTextoAFecha(String texto, String formato) throws DateTimeParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formato);
         return LocalDate.parse(texto, formatter);

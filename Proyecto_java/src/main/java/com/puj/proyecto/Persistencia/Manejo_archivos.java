@@ -5,11 +5,8 @@ import com.puj.proyecto.Model.Cliente;
 import com.puj.proyecto.Model.Empresa;
 import com.puj.proyecto.Model.IEmpresa;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Manejo_archivos {
     public static ArrayList<Cliente> cargar_clientes(IEmpresa empresa,String localizacion_archivo){
@@ -39,4 +36,30 @@ public class Manejo_archivos {
                 }
                 return empresa.getClientes();
             }
+
+    public static void salvarSistema(Empresa empresa, String ruta) {
+        try {
+            ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream(ruta));
+            salida.writeObject(empresa);
+            salida.close();
+            System.out.println("Sistema guardado correctamente");
         }
+        catch (IOException e) {
+            System.out.println("Error guardando sistema: " + e.getMessage());
+        }
+    }
+
+    public static Empresa cargarSistema(String ruta) {
+
+        try {
+            ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(ruta));
+            Empresa empresa = (Empresa) entrada.readObject();
+            entrada.close();
+            return empresa;
+        }
+        catch (Exception e) {
+            System.out.println("Error cargando sistema: " + e.getMessage());
+            return null;
+        }
+    }
+}

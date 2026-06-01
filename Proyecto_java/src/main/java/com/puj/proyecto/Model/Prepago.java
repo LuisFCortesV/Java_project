@@ -7,8 +7,14 @@ public class Prepago extends Cuenta{
     ArrayList<Recarga> recargas;
 
     //Metodos
-    public long obtener_pago_cuenta(){
-        return 0;
+    public long obtener_pago_cuenta(int anio, int mes) {
+        long total = 0;
+        for(Recarga r : recargas){
+            if(r.getFecha().getYear() == anio && r.getFecha().getMonthValue() == mes){
+                total += r.getValor();
+            }
+        }
+        return total;
     }
 
     //Constructor

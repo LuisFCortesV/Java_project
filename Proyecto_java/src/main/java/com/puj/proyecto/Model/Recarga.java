@@ -1,8 +1,9 @@
 package com.puj.proyecto.Model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Recarga {
+public class Recarga implements Serializable {
     private LocalDate fecha;
     private long valor;
 

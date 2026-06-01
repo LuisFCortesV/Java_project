@@ -1,6 +1,8 @@
 package com.puj.proyecto.Model;
 
-public class Cliente {
+import java.io.Serializable;
+
+public class Cliente implements Serializable {
     private String direccion;
     private String identificacion;
     private String nombre;

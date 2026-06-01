@@ -1,14 +1,15 @@
 package com.puj.proyecto.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Cuenta {
+public abstract class Cuenta implements Serializable {
     private long id;
     private long numero;
     ArrayList<Llamada> llamadas;
 
     //Metodos
-    public abstract long obtener_pago_cuenta();
+    public abstract long obtener_pago_cuenta(int anio, int mes);
 
     //Contructor
     public Cuenta(long id, long numero, ArrayList<Llamada> llamadas) {

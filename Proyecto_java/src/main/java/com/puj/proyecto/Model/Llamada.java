@@ -1,8 +1,9 @@
 package com.puj.proyecto.Model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class Llamada {
+public abstract class Llamada implements Serializable {
     private long duracion;
     private LocalDate fecha;
     private long telefono_destinatario;
@@ -51,4 +52,14 @@ public abstract class Llamada {
     public void setValor(long valor) {
         this.valor = valor;
     }
+
+    @Override
+    public String toString() {
+
+        return "Fecha: " + fecha
+                + " | Duracion: " + duracion
+                + " | Telefono: " + telefono_destinatario
+                + " | Valor: " + valor;
+    }
+
 }

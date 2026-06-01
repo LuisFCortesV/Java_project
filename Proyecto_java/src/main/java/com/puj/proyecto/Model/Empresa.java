@@ -1,13 +1,18 @@
 package com.puj.proyecto.Model;
 
+import com.puj.proyecto.Comparator.ComparatorClienteCedula;
+import com.puj.proyecto.Comparator.ComparatorLlamadaFecha;
+import com.puj.proyecto.Comparator.ComparatorRecargaFecha;
 import com.puj.proyecto.Excepciones.cliente_no_existe;
 import com.puj.proyecto.Excepciones.id_cliente_no_cumple;
 import com.puj.proyecto.Excepciones.no_hay_suficiente_saldo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class Empresa implements IEmpresa{
+public class Empresa implements IEmpresa, Serializable {
     private String nombre;
     ArrayList<Cliente> clientes;
     ArrayList<Cuenta> cuentas;
@@ -157,6 +162,148 @@ public class Empresa implements IEmpresa{
                 Recarga nueva_recarga = new Recarga(fecha_recarga,valor);
                 prepago.getRecargas().add(nueva_recarga);
         }
+        // nuevos metodos
+
+    @Override
+    public String reporteFacturacionPostpago(String identificacion, int anio, int mes) {
+        String reporte = "";
+        boolean encontrado = false;
+        for (Cliente cliente : clientes) {
+            if (cliente.getIdentificacion().equals(identificacion)) {
+                encontrado = true;
+                Cuenta cuenta = cliente.getCuenta();
+                if (cuenta instanceof Postpago) {
+                    Postpago post = (Postpago) cuenta;
+                    reporte += "===== CLIENTE =====\n";
+                    reporte += "Nombre: "
+                            + cliente.getNombre()
+                            + "\n";
+                    reporte += "Identificacion: "
+                            + cliente.getIdentificacion()
+                            + "\n";
+                    reporte += "Direccion: "
+                            + cliente.getDireccion()
+                            + "\n\n";
+                    reporte += "===== CUENTA POSTPAGO =====\n";
+                    reporte += "ID: "
+                            + post.getId()
+                            + "\n";
+                    reporte += "Numero: "
+                            + post.getNumero()
+                            + "\n";
+                    reporte += "Cargo fijo: "
+                            + post.getCargo_fijo()
+                            + "\n\n";
+                    Collections.sort(post.getLlamadas(), new ComparatorLlamadaFecha());
+                    long totalMinutos = 0;
+                    long totalValor = 0;
+                    reporte += "===== LLAMADAS =====\n";
+                    for (Llamada llamada : post.getLlamadas()) {
+                        if (llamada.getFecha().getYear() == anio && llamada.getFecha().getMonthValue() == mes) {
+                            reporte += llamada + "\n";
+                            totalMinutos += llamada.getDuracion();
+                            totalValor += llamada.getValor();
+                        }
+                    }
+                    reporte += "\nTotal minutos: "
+                            + totalMinutos
+                            + "\n";
+
+                    reporte += "Total valor llamadas: "
+                            + totalValor
+                            + "\n";
+
+                    reporte += "Total a pagar: "
+                            + post.obtener_pago_cuenta(
+                            anio,
+                            mes)
+                            + "\n";
+                }
+                else {
+                    reporte += "El cliente no tiene cuenta postpago";
+                }
+            }
+        }
+        if (!encontrado) {
+            reporte = "No existe un cliente con esa identificacion";
+        }
+        return reporte;
+    }
+
+    @Override
+    public String reporteRecargas(int anio, int mes) {
+        String reporte = "";
+        long totalRecargasSistema = 0;
+        long totalMinutosSistema = 0;
+        Collections.sort(clientes, new ComparatorClienteCedula());
+        for (Cliente cliente : clientes) {
+            Cuenta cuenta = cliente.getCuenta();
+            if (cuenta instanceof Prepago) {
+                Prepago prep = (Prepago) cuenta;
+                reporte += "\n====================\n";
+                reporte += "Nombre: "
+                        + cliente.getNombre()
+                        + "\n";
+                reporte += "Identificacion: "
+                        + cliente.getIdentificacion()
+                        + "\n";
+                reporte += "Direccion: "
+                        + cliente.getDireccion()
+                        + "\n";
+                reporte += "\nCUENTA PREPAGO\n";
+                reporte += "ID: "
+                        + prep.getId()
+                        + "\n";
+                reporte += "Numero: "
+                        + prep.getNumero()
+                        + "\n";
+                long totalRecargasCliente = 0;
+                long totalMinutosCliente = 0;
+                long totalValorLlamadas = 0;
+                Collections.sort(prep.getLlamadas(), new ComparatorLlamadaFecha());
+                reporte += "\nLLAMADAS\n";
+                for (Llamada llamada : prep.getLlamadas()) {
+                    if (llamada.getFecha().getYear() == anio && llamada.getFecha().getMonthValue() == mes) {
+                        reporte += llamada + "\n";
+                        totalMinutosCliente += llamada.getDuracion();
+                        totalValorLlamadas += llamada.getValor();
+                    }
+                }
+                reporte += "Total minutos: "
+                        + totalMinutosCliente
+                        + "\n";
+                reporte += "Total valor llamadas: "
+                        + totalValorLlamadas
+                        + "\n";
+                Collections.sort(prep.getRecargas(), new ComparatorRecargaFecha());
+                reporte += "\nRECARGAS\n";
+                for (Recarga r : prep.getRecargas()) {
+                    if (r.getFecha().getYear() == anio && r.getFecha().getMonthValue() == mes) {
+                        reporte += "Fecha: " + r.getFecha()
+                                + " Valor: "
+                                + r.getValor()
+                                + "\n";
+                        totalRecargasCliente += r.getValor();
+                    }
+                }
+                reporte += "Total recargas: "
+                        + totalRecargasCliente
+                        + "\n";
+                reporte += "Total minutos cliente: "
+                        + totalMinutosCliente
+                        + "\n";
+                totalRecargasSistema += totalRecargasCliente;
+                totalMinutosSistema += totalMinutosCliente;
+            }
+        }
+        reporte += "\n====================\n";
+
+        reporte += "TOTAL RECARGAS SISTEMA: " + totalRecargasSistema + "\n";
+        reporte += "TOTAL MINUTOS SISTEMA: "
+                + totalMinutosSistema + "\n";
+        return reporte;
+    }
+
 
     //Constructor
     public Empresa(String nombre) {
