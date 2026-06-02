@@ -1,11 +1,10 @@
 package com.puj.proyecto.Enums;
 
 public enum Paises_disponibles {
-    COLOMBIA("Colombia",57),
-    ARGENTINA("Colombia",57),
-    VENEZUELA("Colombia",57),
-    PANAMA("Colombia",57),
-    BOLIVIA("Colombia",57);
+    ARGENTINA("Colombia",54),
+    VENEZUELA("Colombia",55),
+    PANAMA("Colombia",51),
+    BOLIVIA("Colombia",58);
 
     private String nombre;
     private int extension;

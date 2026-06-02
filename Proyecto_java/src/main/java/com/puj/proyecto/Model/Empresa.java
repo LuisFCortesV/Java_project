@@ -1,9 +1,12 @@
 package com.puj.proyecto.Model;
 
+import com.puj.proyecto.App.Utils;
 import com.puj.proyecto.Comparator.ComparatorClienteCedula;
 import com.puj.proyecto.Comparator.ComparatorLlamadaFecha;
 import com.puj.proyecto.Comparator.ComparatorRecargaFecha;
+import com.puj.proyecto.Enums.Paises_disponibles;
 import com.puj.proyecto.Excepciones.cliente_no_existe;
+import com.puj.proyecto.Excepciones.el_cliente_ya_tiene_cuenta;
 import com.puj.proyecto.Excepciones.id_cliente_no_cumple;
 import com.puj.proyecto.Excepciones.no_hay_suficiente_saldo;
 
@@ -19,7 +22,7 @@ public class Empresa implements IEmpresa, Serializable {
 
     //Metodos
 
-        public void crear_cuenta(int numero_telefono, String indentificacion,String tipo_cuenta){
+        public void crear_cuenta(long numero_telefono, String indentificacion,String tipo_cuenta) throws Exception {
             Cliente cliente_actual = null;
             ArrayList<Llamada> llamadas = new ArrayList<>();
             ArrayList<Recarga> recargas = new ArrayList<>();
@@ -33,22 +36,32 @@ public class Empresa implements IEmpresa, Serializable {
                 throw new cliente_no_existe();
             }
 
+            if(cliente_actual.getCuenta() != null){
+                throw new el_cliente_ya_tiene_cuenta();
+            }
+
+
             if(tipo_cuenta.equalsIgnoreCase("prepago")){
-                Cuenta cuenta_nueva = new Prepago(IEmpresa.CONSECUTIVO,numero_telefono,llamadas,5,recargas);
+                Cuenta cuenta_nueva = new Prepago(Utils.CONSECUTIVO++,numero_telefono,llamadas,5,recargas);
                 cliente_actual.setCuenta(cuenta_nueva);
                 cuentas.add(cuenta_nueva);
-                System.out.println("Su nueva cuenta PREPAGO ha sido creada, numero de cuenta: " + IEmpresa.CONSECUTIVO);
+
+                Recarga recarga_inicial = new Recarga(IEmpresa.obtenerFechaActual(), 5 * Utils.precio_minuto);
+                ((Prepago) cuenta_nueva).getRecargas().add(recarga_inicial);
+                System.out.println("Su nueva cuenta PREPAGO ha sido creada, numero de cuenta: " + (Utils.CONSECUTIVO - 1) + "\n" + "Ademas tienes una recarga de 5 minutos.");
+            }
+            else if(tipo_cuenta.equalsIgnoreCase("postpago")){
+                Cuenta cuenta_nueva = new Postpago(Utils.CONSECUTIVO++,numero_telefono,llamadas,20000);
+                cliente_actual.setCuenta(cuenta_nueva);
+                cuentas.add(cuenta_nueva);
+                System.out.println("Su nueva cuenta POSTPAGO ha sido creada, numero de cuenta: " + (Utils.CONSECUTIVO - 1));
             }
             else{
-                Cuenta cuenta_nueva = new Postpago(CONSECUTIVO,numero_telefono,llamadas,20000);
-                cliente_actual.setCuenta(cuenta_nueva);
-                cuentas.add(cuenta_nueva);
-                System.out.println("Su nueva cuenta POSTPAGO ha sido creada, numero de cuenta: " + IEmpresa.CONSECUTIVO);
-
+                throw new Exception("Tipo de cuenta no valido");
             }
         }
 
-        public void registrar_llamada(int id, String tipo_llamada, String pais, LocalDate fecha, int telefono_destinatario, int duracion_llamada){
+        public void registrar_llamada(int id, String tipo_llamada, String pais, LocalDate fecha, long telefono_destinatario, int duracion_llamada){
             Cuenta cuenta_actual = null;
             for(Cuenta c : cuentas){
                 if(c.getId() == id){
@@ -102,7 +115,10 @@ public class Empresa implements IEmpresa, Serializable {
                 }
             }
             else{
-                Llamada ll_inter_nueva = new llamada_internacional(duracion_llamada,fecha,telefono_destinatario,0,pais);
+                Paises_disponibles indicativo = Paises_disponibles.valueOf(pais.toUpperCase());
+                long telefono_completo = Long.parseLong(indicativo.getExtension() + String.valueOf(telefono_destinatario));
+
+                Llamada ll_inter_nueva = new llamada_internacional(duracion_llamada,fecha,telefono_completo,0,pais,indicativo);
                 ll_inter_nueva.setValor(ll_inter_nueva.calcular_valor());
 
                 if(cuenta_actual instanceof Prepago){

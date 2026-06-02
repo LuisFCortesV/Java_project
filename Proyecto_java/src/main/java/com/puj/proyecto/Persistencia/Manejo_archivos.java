@@ -32,8 +32,9 @@ public class Manejo_archivos {
                 }catch(IOException e){
                     System.out.println("Error al leer lista desde texto: " + e.getMessage());
                 }catch(Exception e){
-                    System.out.println(e.getMessage());
+                    System.out.println("ERROR: " + e.getMessage());
                 }
+                System.out.println("Clientes cargados exitosamente");
                 return empresa.getClientes();
             }
 

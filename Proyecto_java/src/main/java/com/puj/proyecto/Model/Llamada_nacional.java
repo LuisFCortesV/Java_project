@@ -1,12 +1,14 @@
 package com.puj.proyecto.Model;
 
+import com.puj.proyecto.App.Utils;
+
 import java.time.LocalDate;
 
 public class Llamada_nacional extends Llamada {
 
     //Metodos
     public long calcular_valor(){
-        return getDuracion() * IEmpresa.precio_minuto;
+        return getDuracion() * Utils.precio_minuto;
     }
 
     // Constructor

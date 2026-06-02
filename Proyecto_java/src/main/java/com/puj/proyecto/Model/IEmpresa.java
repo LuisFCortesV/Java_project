@@ -7,20 +7,16 @@ import java.util.ArrayList;
 
 public interface IEmpresa {
 
-    public static int CONSECUTIVO = 0;
-    public static final long precio_minuto = 10000;
-
-
     public static LocalDate obtenerFechaActual() {
         return LocalDate.now();
     }
     ArrayList<Cliente> getClientes();
 
-    void crear_cuenta(int numero_telefono, String indentificacion,String tipo_cuenta) throws Exception;
+    void crear_cuenta(long numero_telefono, String indentificacion,String tipo_cuenta) throws Exception;
 
     void agregar_recarga(long id, LocalDate fecha_recarga, long valor);
 
-    void registrar_llamada(int id, String tipo_llamada, String pais, LocalDate fecha, int telefono_destinatario, int duracion_llamada);
+    void registrar_llamada(int id, String tipo_llamada, String pais, LocalDate fecha, long telefono_destinatario, int duracion_llamada);
 
     String reporteFacturacionPostpago(String identificacion, int anio, int mes);
 
