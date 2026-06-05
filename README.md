@@ -2,7 +2,7 @@
 
 Un proyecto educativo en Java que implementa un sistema de gestión para una empresa de telecomunicaciones. Este proyecto tiene como objetivo aprender y practicar conceptos fundamentales de programación en Java.
 
-## 📱 ¿De qué trata?
+## ¿De qué trata?
 
 El sistema permite gestionar:
 - **Clientes** de la empresa
@@ -13,7 +13,7 @@ El sistema permite gestionar:
 
 Es una aplicación de consola que simula las operaciones básicas de una empresa de telefonía.
 
-## 🚀 Cómo usar
+## Cómo usar
 
 ### Requisitos
 - Java 17 o superior
@@ -27,7 +27,7 @@ mvn clean package
 java -jar target/Proyeto_java-1.0-SNAPSHOT.jar
 ```
 
-### ⚠️ Primer paso importante
+### Paso importante
 
 **Para que el programa funcione correctamente y accedas a todas sus funcionalidades, debes cargar primero el archivo `info_clientes.txt`:**
 
@@ -38,7 +38,7 @@ java -jar target/Proyeto_java-1.0-SNAPSHOT.jar
 
 **Sin ejecutar este paso, el sistema no tendrá clientes y no podrás realizar operaciones.**
 
-## 📋 Opciones del menú
+## Opciones del menú
 
 1. **Cargar clientes** - Carga los clientes desde el archivo `info_clientes.txt`
 2. **Agregar cuenta** - Crea una nueva cuenta de prepago o postpago para un cliente
@@ -50,7 +50,7 @@ java -jar target/Proyeto_java-1.0-SNAPSHOT.jar
 8. **Cargar datos** - Carga un sistema guardado anteriormente
 9. **Salir** - Cierra la aplicación
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 Proyecto_java/
@@ -79,7 +79,7 @@ Proyecto_java/
 └── info_clientes.txt           # Archivo de clientes (datos de ejemplo)
 ```
 
-## 🎓 Concepto de Aprendizaje
+## Concepto de Aprendizaje
 
 Este es un proyecto educativo diseñado para practicar:
 - Programación orientada a objetos (POO)
@@ -91,7 +91,7 @@ Este es un proyecto educativo diseñado para practicar:
 - Serialización de objetos
 - Enumeraciones
 
-## 📝 Formato del archivo `info_clientes.txt`
+## Formato del archivo `info_clientes.txt`
 
 El archivo debe seguir este formato:
 
@@ -106,7 +106,7 @@ Oswaldo Williams*1923777*calle 7 No. 3-56 Bogota
 
 Cada cliente debe estar separado por asteriscos (*) en el formato: `nombre*cedula*direccion`
 
-## 💡 Ejemplo de uso
+## Ejemplo de uso
 
 1. Inicia el programa
 2. Selecciona opción **1** y carga `info_clientes.txt`
@@ -114,7 +114,7 @@ Cada cliente debe estar separado por asteriscos (*) en el formato: `nombre*cedul
 4. Selecciona opción **3** para registrar una llamada
 5. Selecciona opción **5** o **6** para generar reportes
 
-## 📝 Nota
+## Nota
 
 Este es un proyecto de aprendizaje, por lo que el código puede mejorarse en aspectos como validación más robusta de datos, manejo de errores más profundo y pruebas unitarias.
 
